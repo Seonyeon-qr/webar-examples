@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>HTML DOM - audio #2</title>
+    <script src="https://developer.letsee.io/api/webar?key=598fd5bd3ec4e258d90b37f37e33992a529071e346560189fcc83e31e46b7218"></script>
+
+    <style media="place" type="text/css">
+        #container {
+            -letsee-target: uri('toystory.json');
+            width: 140px;
+            height: 200px;
+            z-index: 300;
+            border: 1px solid red;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="container">
+
+    </div>
+    <script type="application/javascript">
+
+        let t = document.createElement('h2');
+        t.style.color = '#ffffff';
+        t.style.display = 'block';
+        t.style.backgroundColor = '#000000';
+        t.style.opacity = '0.3';
+        document.getElementById('container').appendChild(t);
+
+        let audio = new Audio('./assets/audio/tts59_magic_display.mp3');
+
+        letsee.ready(() => {
+            letsee.start();
+            letsee.onTrackStart(() => {
+                audio.play().then(() => {
+                    t.innerHTML = 'trackStart -> 오디오 재생';
+                }).catch(err => console.error(err));
+            });
+            letsee.onTrackEnd(() => {
+                audio.pause();
+                console.log('trackEnd -> 오디오 중지');
+            });
+        });
+        letsee.init();
+
+    </script>
+</body>
+</html>

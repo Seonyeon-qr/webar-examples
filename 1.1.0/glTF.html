@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>glTF Loader</title>
+    <script src="https://developer.letsee.io/api/webar?key=598fd5bd3ec4e258d90b37f37e33992a529071e346560189fcc83e31e46b7218"></script>
+    <script src="https://unpkg.com/three@0.121.1/build/three.min.js"></script>
+    <script src="https://intra.letsee.io:10001/1.1.0/wzwg/js/lib/r120/GLTFLoader.js"></script>
+
+    <style media="place" type="text/css">
+        #container {
+            -letsee-target: uri('toystory.json');
+            width: 140px;
+            height: 200px;
+            z-index: 300;
+            border: 1px solid red;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="container">
+
+    </div>
+    <script type="application/javascript">
+
+        let duckURI = 'https://intra.letsee.io/3D-model/gltf/ak47/scene.gltf';
+
+        let scene, camera, renderer, entity, mesh, mixer, action, id;
+
+        let glTFLoader = new THREE.GLTFLoader();
+
+        letsee.ready(() => {
+            letsee.start();
+            letsee.addTHREE(THREE)
+                .then(obj => {
+                    return new Promise((resolve) => {
+                        scene = obj.scene;
+                        camera = obj.camera;
+                        renderer = obj.renderer;
+                        resolve(addLightToScene(scene));
+                    });
+                })
+                .then(_scene => {
+                    return letsee.addTarget('toystory.json');
+                })
+                .then(_entity => {
+                    entity = _entity;
+                    glTFLoader.load(duckURI, onLoad, onProgress, onError);
+                    renderAll();
+                })
+            ;
+        });
+        letsee.init();
+
+        const addLightToScene = (scene) => {
+            let _scene = scene;
+
+            let ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+            ambientLight.position.set(0, 0, 0);
+
+            let dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
+            dirLight.position.set(-0.5, 0.5, 0.866);
+            dirLight.castShadow = false;
+            dirLight.shadow.mapSize = new THREE.Vector2(512, 512);
+
+            let spotLight = new THREE.SpotLight(0xeeeeee, 5);
+            spotLight.position.set(2, -5, 10);
+            spotLight.castShadow = true;
+
+            _scene.add(ambientLight);
+            _scene.add(dirLight);
+
+            return _scene;
+        }
+
+        const onLoad = (gltf) => {
+
+            mesh = gltf.scene;
+
+            mesh.position.set(-100, -100, -500);
+            mesh.rotation.set(70, 45, 0);
+            mesh.visible = true;
+            mesh.tag = 'ak47';
+            mesh.name = 'ak47';
+            mesh.scale.setScalar(1);
+
+            // Play model's animation
+            if (gltf.animations.length > 0) {
+                mixer = new THREE.AnimationMixer(gltf.scene);
+                action = mixer.clipAction(gltf.animations[0]);
+                action.play();
+            }
+
+            mesh.add(new THREE.AxesHelper(300));
+
+            //Get center point of the model
+            mesh.children.forEach(child => {
+                child.traverse(function (obj) {
+                    if (obj.type === 'Mesh') {
+                        obj.geometry.center();
+                    }
+                })
+            })
+
+            entity.add(mesh);
+
+            // add entity to scene
+            scene.add(entity);
+        };
+
+        const onError = (e) => {
+            console.error(e);
+        };
+
+        // Show the progress of loading model
+        const onProgress = (xhr) => {
+            if (xhr.lengthComputable) {
+                const percentComplete = xhr.loaded / xhr.total * 100;
+
+                if (Math.round(percentComplete) === 100) {
+
+                }
+            }
+        }
+
+        // Render all
+        const renderAll = async function () {
+            requestAnimationFrame(renderAll);
+            if (mixer) {
+                let delta = clock.getDelta();
+                mixer.update(delta);
+            }
+            await letsee.threeRenderer().update(); // Engine mainLoop 수행
+            const _camera = letsee.threeRenderer().getDeviceCamera(); // 매 프레임마다 카메라 얻어옴.
+            renderer.render(scene, _camera);
+        };
+
+    </script>
+</body>
+</html>
