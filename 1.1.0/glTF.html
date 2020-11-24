@@ -23,7 +23,9 @@
     <div id="container">
 
     </div>
-    <script type="application/javascript">
+    <script type="module">
+
+        import {Either, Left, Right, EntityFactory} from './assets/js/EntityFactory.js';
 
         let duckURI = 'https://intra.letsee.io/3D-model/gltf/ak47/scene.gltf';
 
@@ -43,10 +45,10 @@
                     });
                 })
                 .then(_scene => {
-                    return letsee.addTarget('toystory.json');
+                    return EntityFactory.addEntity('toystory.json');
                 })
                 .then(_entity => {
-                    entity = _entity;
+                    entity = _entity.value();
                     glTFLoader.load(duckURI, onLoad, onProgress, onError);
                     renderAll();
                 })
