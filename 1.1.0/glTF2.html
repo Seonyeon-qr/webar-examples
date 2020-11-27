@@ -17,12 +17,25 @@
             border: 1px solid red;
         }
     </style>
+    <style type="text/css">
+        #select{
+            position:fixed;
+            right:2%;
+            top: 3%;
+            width:300px;
+            height: 50px;
+            z-index: 999999;
+        }
+    </style>
 
 </head>
 <body>
     <div id="container">
 
     </div>
+    <select id="select">
+        <!--<option value="" >select GLTF</option>-->
+    </select>
     <script type="module">
 
         import {Either, Left, Right, EntityFactory} from './assets/js/EntityFactory.js';
@@ -30,9 +43,47 @@
         let basePath = 'https://intra.letsee.io/3D-model/gltf/EMC/';
 
         let files = [
+            basePath+'20201106/take_05/A_take_05.gltf',
+            basePath+'20201106/take_08/A_take_08.gltf',
+            basePath+'20201106/take_08_mod/A_take_08A.gltf',
+            basePath+'20201106/take_13/A_take_13.gltf',
+            basePath+'20201106/take_17/A_take_17_in.gltf',
+            basePath+'20201106/take_17/A_take_17_loop.gltf',
+            basePath+'20201106/take_17_in/A_take_17_in.gltf',
+            basePath+'20201106/take_17_loop/A_take_17_loop.gltf',
+            basePath+'20201106/take_17_ready/A_take_17_ready.gltf',
+            basePath+'20201106/take_22/A_take_17_loop.gltf',
+            basePath+'20201106/take_22/A_take_22_loop.gltf',
+            basePath+'20201106/take_24/A_take_24.gltf',
+            basePath+'20201106/take_30/A_take_30.gltf',
             basePath+'20201114/B_take_06/B_take_06.gltf',
+            basePath+'20201114/B_take_08/B_take_08.gltf',
+            basePath+'20201114/B_take_10/B_take_10.gltf',
+            basePath+'20201114/B_take_13/B_take_13.gltf',
+            basePath+'20201114/B_take_14/B_take_14_npc.gltf',
+            basePath+'20201114/B_take_17/B_take_17.gltf',
+            basePath+'20201114/B_take_19/B_take_19.gltf',
+            basePath+'20201114/B_take_20/B_take_20.gltf',
+            basePath+'20201114/B_take_23/B_take_23.gltf',
+            basePath+'20201114/B_take_27/B_take_27.gltf',
             basePath+'20201124/C_take_06/C_take_06.gltf',
+            basePath+'20201124/C_take_08/C_take_08.gltf',
+            basePath+'20201124/C_take_09/C_take_09.gltf',
+            basePath+'20201124/C_take_11/C_take_11.gltf',
+            basePath+'20201124/C_take_14/C_take_14.gltf',
+            basePath+'20201124/C_take_21/C_take_21.gltf',
+            basePath+'man/test_ch.gltf',
+            basePath+'man2/test_ch01.gltf',
+            basePath+'man2/test_ch02.gltf'
         ];
+
+        let select = document.getElementById('select');
+        files.forEach( (file,idx) =>{
+           let option = document.createElement('option');
+           option.setAttribute('value',file);
+           option.innerText = file.replace(basePath,'');
+           select.appendChild(option);
+        });
 
         let data = {
             fileName: '',
@@ -89,13 +140,38 @@
                 })
                 .then(_entity => {
                     entity = _entity.value();
-                    data.fileName = currentFileName = files[0];
-                    glTFLoader.load(currentFileName, onLoad, onProgress, onError);
-                    renderAll();
+                    //loadTestGLTF;
                 })
             ;
+
+
         });
         letsee.init();
+
+        let loadTestGLTF = () => {
+
+            let select = document.getElementById('select');
+            let selectValue = select.options[select.selectedIndex].value;
+            //console.error(select.options[select.selectedIndex].value);
+            //entity = _entity.value();
+            //scene.remove(scene.children[2]);
+            scene.children.forEach( child =>{
+               //child.
+               //if(child.isObject3D == true) child.parent.remove(child);
+            });
+
+            data.fileName = currentFileName = selectValue;
+            console.error(select.options[select.selectedIndex].value);
+            glTFLoader.load(currentFileName, onLoad, onProgress, onError);
+            renderAll();
+        }
+
+        window.onload = () => {
+            const select = document.getElementById('select');
+            select.addEventListener('change' , loadTestGLTF);
+        };
+
+
 
         const addLightToScene = (scene) => {
             let _scene = scene;
