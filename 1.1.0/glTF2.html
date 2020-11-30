@@ -41,6 +41,7 @@
         import {Either, Left, Right, EntityFactory} from './assets/js/EntityFactory.js';
 
         let basePath = 'https://intra.letsee.io/3D-model/gltf/EMC/';
+        //let basePath = '../3D-model/gltf/EMC/';
 
         let files = [
             basePath+'20201106/take_05/A_take_05.gltf',
@@ -140,7 +141,7 @@
                 })
                 .then(_entity => {
                     entity = _entity.value();
-                    //loadTestGLTF;
+                    loadTestGLTF();
                 })
             ;
 
@@ -155,10 +156,10 @@
             //console.error(select.options[select.selectedIndex].value);
             //entity = _entity.value();
             //scene.remove(scene.children[2]);
-            scene.children.forEach( child =>{
+           /* scene.children.forEach( (child ,idx) =>{
                //child.
-               //if(child.isObject3D == true) child.parent.remove(child);
-            });
+               if(child.isObject3D == true) scene.children[idx].remove();
+            });*/
 
             data.fileName = currentFileName = selectValue;
             console.error(select.options[select.selectedIndex].value);
