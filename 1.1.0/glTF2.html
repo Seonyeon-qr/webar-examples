@@ -146,6 +146,15 @@
 
             let select = document.getElementById('select');
             let selectValue = select.options[select.selectedIndex].value;
+
+            scene.children.forEach(c => {
+                if (c.isEntity) {
+                    c.children = [];
+                }
+            })
+
+            console.warn(scene);
+
             //console.error(select.options[select.selectedIndex].value);
             //entity = _entity.value();
             //scene.remove(scene.children[2]);
@@ -157,6 +166,7 @@
             data.fileName = currentFileName = selectValue;
             console.error(select.options[select.selectedIndex].value);
             glTFLoader.load(currentFileName, onLoad, onProgress, onError);
+
             renderAll();
         }
 
@@ -164,8 +174,6 @@
             const select = document.getElementById('select');
             select.addEventListener('change' , loadTestGLTF);
         };
-
-
 
         const addLightToScene = (scene) => {
             let _scene = scene;
@@ -272,6 +280,8 @@
             }
         };
 
+
+        export default mesh;
     </script>
 </body>
 </html>
