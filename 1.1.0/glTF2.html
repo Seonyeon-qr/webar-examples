@@ -4,19 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <title>glTF Loader</title>
-    <script src="https://developer.letsee.io/api/webar?key=598fd5bd3ec4e258d90b37f37e33992a529071e346560189fcc83e31e46b7218"></script>
-    <script src="https://unpkg.com/three@0.121.1/build/three.min.js"></script>
-    <script src="https://intra.letsee.io:10001/1.1.0/wzwg/js/lib/r120/GLTFLoader.js"></script>
 
-    <style media="place" type="text/css">
-        #container {
-            -letsee-target: uri('toystory.json');
-            width: 140px;
-            height: 200px;
-            z-index: 300;
-            border: 1px solid red;
-        }
-    </style>
+    <script src="https://unpkg.com/three@0.123.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.123.0/examples/js/loaders/GLTFLoader.js"></script>
+
+<!--     <script src="https://developer.letsee.io/api/webar?key=598fd5bd3ec4e258d90b37f37e33992a529071e346560189fcc83e31e46b7218"></script>-->
+    <!-- Letsee Engine - Updated 2020.11.25 -->
+    <script src="letsee.js"></script>
+
     <style type="text/css">
         #select{
             position:fixed;
@@ -30,9 +25,7 @@
 
 </head>
 <body>
-    <div id="container">
-
-    </div>
+    <div id="container"></div>
     <select id="select">
         <!--<option value="" >select GLTF</option>-->
     </select>
@@ -220,7 +213,9 @@
             mesh.children.forEach(child => {
                 child.traverse(function (obj) {
                     switch (obj.type) {
-                        case 'Mesh':            obj.geometry.center();                      break;
+                        case 'Mesh':
+                            obj.geometry.center();
+                            break;
                         case 'SkinnedMesh':
                             // data.skinnedMeshes.push(obj);
                             const _infos = {
