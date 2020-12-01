@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <title>glTF Loader</title>
+    <script src="https://developer.letsee.io/api/webar?key=598fd5bd3ec4e258d90b37f37e33992a529071e346560189fcc83e31e46b7218"></script>
+    <script src="https://unpkg.com/three@0.121.1/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.121.1/examples/js/loaders/GLTFLoader.js"></script>
 
-    <script src="https://unpkg.com/three@0.123.0/build/three.min.js"></script>
-    <script src="https://unpkg.com/three@0.123.0/examples/js/loaders/GLTFLoader.js"></script>
-
-<!--     <script src="https://developer.letsee.io/api/webar?key=598fd5bd3ec4e258d90b37f37e33992a529071e346560189fcc83e31e46b7218"></script>-->
-    <!-- Letsee Engine - Updated 2020.11.25 -->
-    <script src="letsee.js"></script>
-
+    <style media="place" type="text/css">
+        #container {
+            -letsee-target: uri('toystory.json');
+            width: 140px;
+            height: 200px;
+            z-index: 300;
+            border: 1px solid red;
+        }
+    </style>
     <style type="text/css">
         #select{
             position:fixed;
@@ -25,263 +30,321 @@
 
 </head>
 <body>
-    <div id="container"></div>
-    <select id="select">
-        <!--<option value="" >select GLTF</option>-->
-    </select>
-    <script type="module">
+<div id="container">
 
-        import {Either, Left, Right, EntityFactory} from './assets/js/EntityFactory.js';
+</div>
+<select id="select">
+    <!--<option value="" >select GLTF</option>-->
+</select>
+<script type="module">
 
-        let basePath = 'https://intra.letsee.io/3D-model/gltf/EMC/';
-        //let basePath = '../3D-model/gltf/EMC/';
+    import {Either, Left, Right, EntityFactory} from './assets/js/EntityFactory.js';
 
-        let files = [
-            basePath+'20201106/take_05/A_take_05.gltf',
-            basePath+'20201106/take_08/A_take_08.gltf',
-            basePath+'20201106/take_08_mod/A_take_08A.gltf',
-            basePath+'20201106/take_13/A_take_13.gltf',
-            basePath+'20201106/take_17/A_take_17_in.gltf',
-            basePath+'20201106/take_17/A_take_17_loop.gltf',
-            basePath+'20201106/take_17_in/A_take_17_in.gltf',
-            basePath+'20201106/take_17_loop/A_take_17_loop.gltf',
-            basePath+'20201106/take_17_ready/A_take_17_ready.gltf',
-            basePath+'20201106/take_22/A_take_17_loop.gltf',
-            basePath+'20201106/take_22/A_take_22_loop.gltf',
-            basePath+'20201106/take_24/A_take_24.gltf',
-            basePath+'20201106/take_30/A_take_30.gltf',
-            basePath+'20201114/B_take_06/B_take_06.gltf',
-            basePath+'20201114/B_take_08/B_take_08.gltf',
-            basePath+'20201114/B_take_10/B_take_10.gltf',
-            basePath+'20201114/B_take_13/B_take_13.gltf',
-            basePath+'20201114/B_take_14/B_take_14_npc.gltf',
-            basePath+'20201114/B_take_17/B_take_17.gltf',
-            basePath+'20201114/B_take_19/B_take_19.gltf',
-            basePath+'20201114/B_take_20/B_take_20.gltf',
-            basePath+'20201114/B_take_23/B_take_23.gltf',
-            basePath+'20201114/B_take_27/B_take_27.gltf',
-            basePath+'20201124/C_take_06/C_take_06.gltf',
-            basePath+'20201124/C_take_08/C_take_08.gltf',
-            basePath+'20201124/C_take_09/C_take_09.gltf',
-            basePath+'20201124/C_take_11/C_take_11.gltf',
-            basePath+'20201124/C_take_14/C_take_14.gltf',
-            basePath+'20201124/C_take_21/C_take_21.gltf',
-            basePath+'man/test_ch.gltf',
-            basePath+'man2/test_ch01.gltf',
-            basePath+'man2/test_ch02.gltf'
-        ];
+    let fileNames = [];
+
+    let basePath = 'https://intra.letsee.io/3D-model/gltf/EMC/';
+    //let basePath = '../3D-model/gltf/EMC/';
+
+    let files = [
+        basePath+'20201106/take_05/A_take_05.gltf',
+        basePath+'20201106/take_08/A_take_08.gltf',
+        basePath+'20201106/take_08_mod/A_take_08A.gltf',
+        basePath+'20201106/take_13/A_take_13.gltf',
+        basePath+'20201106/take_17/A_take_17_in.gltf',
+        basePath+'20201106/take_17/A_take_17_loop.gltf',
+        basePath+'20201106/take_17_in/A_take_17_in.gltf',
+        basePath+'20201106/take_17_loop/A_take_17_loop.gltf',
+        basePath+'20201106/take_17_ready/A_take_17_ready.gltf',
+        basePath+'20201106/take_22/A_take_17_loop.gltf',
+        basePath+'20201106/take_22/A_take_22_loop.gltf',
+        basePath+'20201106/take_24/A_take_24.gltf',
+        basePath+'20201106/take_30/A_take_30.gltf',
+        basePath+'20201114/B_take_06/B_take_06.gltf',
+        basePath+'20201114/B_take_08/B_take_08.gltf',
+        basePath+'20201114/B_take_10/B_take_10.gltf',
+        basePath+'20201114/B_take_13/B_take_13.gltf',
+        basePath+'20201114/B_take_14/B_take_14_npc.gltf',
+        basePath+'20201114/B_take_17/B_take_17.gltf',
+        basePath+'20201114/B_take_19/B_take_19.gltf',
+        basePath+'20201114/B_take_20/B_take_20.gltf',
+        basePath+'20201114/B_take_23/B_take_23.gltf',
+        basePath+'20201114/B_take_27/B_take_27.gltf',
+        basePath+'20201124/C_take_06/C_take_06.gltf',
+        basePath+'20201124/C_take_08/C_take_08.gltf',
+        basePath+'20201124/C_take_09/C_take_09.gltf',
+        basePath+'20201124/C_take_11/C_take_11.gltf',
+        basePath+'20201124/C_take_14/C_take_14.gltf',
+        basePath+'20201124/C_take_21/C_take_21.gltf',
+        basePath+'man/test_ch.gltf',
+        basePath+'man2/test_ch01.gltf',
+        basePath+'man2/test_ch02.gltf'
+    ];
+
+    let select = document.getElementById('select');
+    files.forEach( (file,idx) =>{
+        let option = document.createElement('option');
+        option.setAttribute('value',file);
+        option.innerText = file.replace(basePath,'');
+        select.appendChild(option);
+    });
+
+    let data = {
+        fileName: '',
+        animations: new Array(),
+        meshInfos: new Array(),
+        renderInfo: null,
+        checkMorph: function() {
+            let result = {
+                fileName: data.fileName,
+                animations: null,
+                morphs: null,
+            };
+            let animations = new Array();
+            data.animations.forEach(animation => {
+                let _animation = {};
+                _animation.name = animation.name;
+                _animation.trackCnt = animation.tracks.length;
+                _animation.duration = animation.duration;
+                _animation.blendMode = animation.blendMode;
+                animations.push(_animation);
+            });
+            let morphs = new Array();
+            data.meshInfos.forEach(info => {
+                let compare = new Array();
+                const attr = info.morphAttributes;
+                const length = attr.normal.length | attr.position.length;
+                for (let i = 0; i < length; i++) {
+                    const t1 = attr.normal[i];
+                    const t2 = attr.position[i];
+                    compare.push(t1.array.every((val, index) => val === t2.array[index]));
+                }
+                morphs.push({name: info.name, compare:compare, hasEnabledMorphs: compare.every(val => val === false), textures: info.material});
+            });
+            result.animations = animations;
+            result.morphs = morphs;
+            return result;
+        }
+    };
+
+    let currentFileName = '';
+
+    let scene, camera, renderer, entity, mesh, mixer, action, id, clock;
+
+    let glTFLoader = new THREE.GLTFLoader();
+
+    let flag = true;
+
+    letsee.ready(() => {
+        letsee.start();
+        letsee.addTHREE(THREE)
+            .then(obj => {
+                return new Promise((resolve) => {
+                    scene = obj.scene;
+                    camera = obj.camera;
+                    renderer = obj.renderer;
+                    renderer.toneMappingExposure = 1;
+                    renderer.outputEncoding = THREE.sRGBEncoding;
+                    clock = new THREE.Clock();
+                    resolve(addLightToScene(scene));
+                });
+            })
+            .then(_scene => {
+                return EntityFactory.addEntity('toystory.json');
+            })
+            .then(_entity => {
+                entity = _entity.value();
+                loadTestGLTF();
+            })
+        ;
+
+
+    });
+    letsee.init();
+
+    let loadTestGLTF = () => {
 
         let select = document.getElementById('select');
-        files.forEach( (file,idx) =>{
-           let option = document.createElement('option');
-           option.setAttribute('value',file);
-           option.innerText = file.replace(basePath,'');
-           select.appendChild(option);
-        });
+        let selectValue = select.options[select.selectedIndex].value;
 
-        let data = {
-            fileName: '',
-            animations: new Array(),
-            meshInfos: new Array(),
-            renderInfo: null,
-            checkMorph: function() {
-                let result = {
-                    fileName: data.fileName,
-                    animations: data.animations,
-                    morphs: null
-                };
-                let arr = new Array();
-                data.meshInfos.forEach(info => {
-                    let compare = new Array();
-                    const attr = info.morphAttributes;
-                    const length = attr.normal.length | attr.position.length;
-                    for (let i = 0; i < length; i++) {
-                        const t1 = attr.normal[i];
-                        const t2 = attr.position[i];
-                        compare.push(t1.array.every((val, index) => val === t2.array[index]));
-                    }
-                    arr.push({name: info.name, compare:compare});
-                });
-                result.morphs = arr;
-                return result;
-            }
-        };
+        if (entity.children.length > 0) {
+            entity.children = [];
+            flag = true;
+            if (renderer) renderer.dispose();
+        }
 
-        let currentFileName = '';
+        data.fileName = currentFileName = selectValue;
+        glTFLoader.load(currentFileName, onLoad, onProgress, onError);
+        renderAll();
+    }
 
-        let scene, camera, renderer, entity, mesh, mixer, action, id, clock;
-
-        let glTFLoader = new THREE.GLTFLoader();
-
-        let flag = true;
-
-        letsee.ready(() => {
-            letsee.start();
-            letsee.addTHREE(THREE)
-                .then(obj => {
-                    return new Promise((resolve) => {
-                        scene = obj.scene;
-                        camera = obj.camera;
-                        renderer = obj.renderer;
-                        renderer.toneMappingExposure = 1;
-                        renderer.outputEncoding = THREE.sRGBEncoding;
-                        clock = new THREE.Clock();
-                        resolve(addLightToScene(scene));
-                    });
-                })
-                .then(_scene => {
-                    return EntityFactory.addEntity('toystory.json');
-                })
-                .then(_entity => {
-                    entity = _entity.value();
-                    loadTestGLTF();
-                })
-            ;
+    window.onload = () => {
+        const select = document.getElementById('select');
+        select.addEventListener('change' , loadTestGLTF);
+    };
 
 
-        });
-        letsee.init();
 
-        let loadTestGLTF = () => {
+    const addLightToScene = (scene) => {
+        let _scene = scene;
 
-            let select = document.getElementById('select');
-            let selectValue = select.options[select.selectedIndex].value;
+        let ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        ambientLight.position.set(0, 0, 0);
 
-            scene.children.forEach(c => {
-                if (c.isEntity) {
-                    c.children = [];
+        let dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
+        dirLight.position.set(-0.5, 0.5, 0.866);
+        dirLight.castShadow = false;
+        dirLight.shadow.mapSize = new THREE.Vector2(512, 512);
+
+        // let spotLight = new THREE.SpotLight(0xeeeeee, 5);
+        // spotLight.position.set(2, -5, 10);
+        // spotLight.castShadow = true;
+
+        _scene.add(ambientLight);
+        _scene.add(dirLight);
+
+        return _scene;
+    }
+
+    const onLoad = (gltf) => {
+
+        mesh = gltf.scene;
+
+        mesh.position.set(0, 0, 0);
+        mesh.rotation.set(70, 45, 0);
+        mesh.visible = true;
+        mesh.tag = files[0];
+        mesh.name = files[0];
+        mesh.scale.setScalar(1);
+
+        // Play model's animation
+        if (gltf.animations.length > 0) {
+            data.animations = gltf.animations;
+            mixer = new THREE.AnimationMixer(gltf.scene);
+            action = mixer.clipAction(gltf.animations[0]);
+            action.play();
+        }
+
+        mesh.add(new THREE.AxesHelper(300));
+
+        //Get center point of the model
+        mesh.children.forEach(child => {
+            child.traverse(function (obj) {
+                // const _obj = obj['material'];
+                // if (_obj) console.warn(obj.type, _obj.type, _obj);
+                switch (obj.type) {
+                    case 'Mesh':
+                        obj.geometry.center();
+                        break;
+                    case 'SkinnedMesh':
+                        // data.skinnedMeshes.push(obj);
+                        const _infos = {
+                            name: obj.userData.name,
+                            type: obj.type,
+                            geometry: { attributes: obj.geometry.attributes },
+                            morphAttributes: obj.geometry.morphAttributes,
+                            morphTargetsRelative: obj.geometry.morphTargetsRelative,
+                            material: {
+                                alphaMap: obj.material['alphaMap'],
+                                aoMap: obj.material['aoMap'],
+                                bumpMap: obj.material['bumpMap'],
+                                displacementMap: obj.material['displacementMap'],
+                                emissiveMap: obj.material['emissiveMap'],
+                                envMap: obj.material['envMap'],
+                                lightMap: obj.material['lightMap'],
+                                map: obj.material['map'],
+                                metalnessMap: obj.material['metalnessMap'],
+                                normalMap: obj.material['normalMap'],
+                                roughnessMap: obj.material['roughnessMap']
+                            },
+                        };
+                        if (_infos.morphTargetsRelative) data.meshInfos.push(_infos);
+                        break;
+                    default:
+                        break;
                 }
             })
+        })
 
-            console.warn(scene);
+        entity.add(mesh);
 
-            //console.error(select.options[select.selectedIndex].value);
-            //entity = _entity.value();
-            //scene.remove(scene.children[2]);
-           /* scene.children.forEach( (child ,idx) =>{
-               //child.
-               if(child.isObject3D == true) scene.children[idx].remove();
-            });*/
+        // add entity to scene
+        scene.add(entity);
+    };
 
-            data.fileName = currentFileName = selectValue;
-            console.error(select.options[select.selectedIndex].value);
-            glTFLoader.load(currentFileName, onLoad, onProgress, onError);
+    const onError = (e) => {
+        console.error(e);
+    };
 
-            renderAll();
-        }
+    // Show the progress of loading model
+    const onProgress = (xhr) => {
+        if (xhr.lengthComputable) {
+            const percentComplete = xhr.loaded / xhr.total * 100;
 
-        window.onload = () => {
-            const select = document.getElementById('select');
-            select.addEventListener('change' , loadTestGLTF);
-        };
+            if (Math.round(percentComplete) === 100) {
+                console.warn(percentComplete);
+            } else {
 
-        const addLightToScene = (scene) => {
-            let _scene = scene;
-
-            let ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-            ambientLight.position.set(0, 0, 0);
-
-            let dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
-            dirLight.position.set(-0.5, 0.5, 0.866);
-            dirLight.castShadow = false;
-            dirLight.shadow.mapSize = new THREE.Vector2(512, 512);
-
-            // let spotLight = new THREE.SpotLight(0xeeeeee, 5);
-            // spotLight.position.set(2, -5, 10);
-            // spotLight.castShadow = true;
-
-            _scene.add(ambientLight);
-            _scene.add(dirLight);
-
-            return _scene;
-        }
-
-        const onLoad = (gltf) => {
-
-            mesh = gltf.scene;
-
-            mesh.position.set(0, 0, 0);
-            mesh.rotation.set(70, 45, 0);
-            mesh.visible = true;
-            mesh.tag = files[0];
-            mesh.name = files[0];
-            mesh.scale.setScalar(1);
-
-            // Play model's animation
-            if (gltf.animations.length > 0) {
-                data.animations.push(gltf.animations);
-                mixer = new THREE.AnimationMixer(gltf.scene);
-                action = mixer.clipAction(gltf.animations[0]);
-                action.play();
             }
 
-            mesh.add(new THREE.AxesHelper(300));
+        }
+    }
 
-            //Get center point of the model
-            mesh.children.forEach(child => {
-                child.traverse(function (obj) {
-                    switch (obj.type) {
-                        case 'Mesh':
-                            obj.geometry.center();
-                            break;
-                        case 'SkinnedMesh':
-                            // data.skinnedMeshes.push(obj);
-                            const _infos = {
-                                name: obj.userData.name,
-                                type: obj.type,
-                                geometry: { attributes: obj.geometry.attributes },
-                                morphAttributes: obj.geometry.morphAttributes,
-                                morphTargetsRelative: obj.geometry.morphTargetsRelative,
-                            };
-                            if (_infos.morphTargetsRelative) data.meshInfos.push(_infos);
-                            break;
-                        default:
-                            break;
-                    }
-                })
-            })
+    let cnt = 100;
 
-            entity.add(mesh);
+    // Render all
+    const renderAll = async function () {
+        requestAnimationFrame(renderAll);
+        if (mixer) {
+            let delta = clock.getDelta();
+            mixer.update(delta);
+        }
+        await letsee.threeRenderer().update(); // Engine mainLoop 수행
+        const _camera = letsee.threeRenderer().getDeviceCamera(); // 매 프레임마다 카메라 얻어옴.
+        renderer.render(scene, _camera);
+        if (flag && renderer.info.memory.geometries > 0) {
+            data.renderInfo = renderer.info;
+            data.print = print;
+            window.modelData = data;
+            if (data.renderInfo.memory.geometries > 0) {
+                flag = false;
+                let result = data.checkMorph();
+                result.renderInfo = data.renderInfo;
+                localStorage.setItem(data.fileName, JSON.stringify(result));
+                fileNames.push(data.fileName);
 
-            // add entity to scene
-            scene.add(entity);
-        };
-
-        const onError = (e) => {
-            console.error(e);
-        };
-
-        // Show the progress of loading model
-        const onProgress = (xhr) => {
-            if (xhr.lengthComputable) {
-                const percentComplete = xhr.loaded / xhr.total * 100;
-
-                if (Math.round(percentComplete) === 100) {
-                    console.warn(percentComplete);
-                }
             }
         }
-
-        // Render all
-        const renderAll = async function () {
-            requestAnimationFrame(renderAll);
-            if (mixer) {
-                let delta = clock.getDelta();
-                mixer.update(delta);
+        if (!flag) {
+            if (cnt > 0) {
+                --cnt;
+            } else if (cnt === 0) {
+                const temp = fileNames[0].split('/');
+                print(temp[temp.length-2] + '_' +temp[temp.length-1]);
+                --cnt;
             }
-            await letsee.threeRenderer().update(); // Engine mainLoop 수행
-            const _camera = letsee.threeRenderer().getDeviceCamera(); // 매 프레임마다 카메라 얻어옴.
-            renderer.render(scene, _camera);
-            if (flag && renderer.info.memory.geometries > 0) {
-                data.renderInfo = renderer.info;
-                window.modelData = data;
-                console.warn(window.modelData);
-                if (data.renderInfo.memory.geometries > 0) flag = false;
-            }
-        };
+        }
+    };
 
+    const print = function(fileName) {
+        let datas = [];
+        fileNames.forEach(fileName => {
+            datas.push(JSON.parse(localStorage.getItem(fileName)));
+        });
 
-        export default mesh;
-    </script>
+        let blob = new Blob([JSON.stringify(datas)], { type: 'application/json'});
+        const objURL = window.URL.createObjectURL(blob);
+
+        // 이전에 생성된 메모리 해제
+        if (window.__Xr_objURL_forCreatingFile__) {
+            window.URL.revokeObjectURL(window.__Xr_objURL_forCreatingFile__);
+        }
+        window.__Xr_objURL_forCreatingFile__ = objURL;
+        let a = document.createElement('a');
+        a.download = fileName+'.json';
+        a.href = objURL;
+        a.click();
+    }
+
+</script>
 </body>
 </html>
