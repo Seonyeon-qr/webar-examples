@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <title>glTF Loader</title>
-    <script src="https://developer.letsee.io/api/webar?key=598fd5bd3ec4e258d90b37f37e33992a529071e346560189fcc83e31e46b7218"></script>
-    <script src="https://unpkg.com/three@0.121.1/build/three.min.js"></script>
-    <script src="https://unpkg.com/three@0.121.1/examples/js/loaders/GLTFLoader.js"></script>
+<!--    <script src="https://developer.letsee.io/api/webar?key=12ccc6bcd676db20370d1b07d8204ef81c4d1410955dd99e8d03a7f1991f2966"></script>-->
+    <script src="letsee.js"></script>
+    <script src="https://unpkg.com/three@0.117.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.117.0/examples/js/loaders/GLTFLoader.js"></script>
 
     <style media="place" type="text/css">
         #container {
@@ -46,38 +47,63 @@
     //let basePath = '../3D-model/gltf/EMC/';
 
     let files = [
-        basePath+'20201106/take_05/A_take_05.gltf',
-        basePath+'20201106/take_08/A_take_08.gltf',
-        basePath+'20201106/take_08_mod/A_take_08A.gltf',
-        basePath+'20201106/take_13/A_take_13.gltf',
-        basePath+'20201106/take_17/A_take_17_in.gltf',
-        basePath+'20201106/take_17/A_take_17_loop.gltf',
-        basePath+'20201106/take_17_in/A_take_17_in.gltf',
-        basePath+'20201106/take_17_loop/A_take_17_loop.gltf',
-        basePath+'20201106/take_17_ready/A_take_17_ready.gltf',
-        basePath+'20201106/take_22/A_take_17_loop.gltf',
-        basePath+'20201106/take_22/A_take_22_loop.gltf',
-        basePath+'20201106/take_24/A_take_24.gltf',
-        basePath+'20201106/take_30/A_take_30.gltf',
-        basePath+'20201114/B_take_06/B_take_06.gltf',
-        basePath+'20201114/B_take_08/B_take_08.gltf',
-        basePath+'20201114/B_take_10/B_take_10.gltf',
-        basePath+'20201114/B_take_13/B_take_13.gltf',
-        basePath+'20201114/B_take_14/B_take_14_npc.gltf',
-        basePath+'20201114/B_take_17/B_take_17.gltf',
-        basePath+'20201114/B_take_19/B_take_19.gltf',
-        basePath+'20201114/B_take_20/B_take_20.gltf',
-        basePath+'20201114/B_take_23/B_take_23.gltf',
-        basePath+'20201114/B_take_27/B_take_27.gltf',
-        basePath+'20201124/C_take_06/C_take_06.gltf',
-        basePath+'20201124/C_take_08/C_take_08.gltf',
-        basePath+'20201124/C_take_09/C_take_09.gltf',
-        basePath+'20201124/C_take_11/C_take_11.gltf',
-        basePath+'20201124/C_take_14/C_take_14.gltf',
-        basePath+'20201124/C_take_21/C_take_21.gltf',
-        basePath+'man/test_ch.gltf',
-        basePath+'man2/test_ch01.gltf',
-        basePath+'man2/test_ch02.gltf'
+        // basePath+'20201106/take_05/A_take_05.gltf',
+        // basePath+'20201106/take_08/A_take_08.gltf',
+        // basePath+'20201106/take_08_mod/A_take_08A.gltf',
+        // basePath+'20201106/take_13/A_take_13.gltf',
+        // basePath+'20201106/take_17/A_take_17_in.gltf',
+        // basePath+'20201106/take_17/A_take_17_loop.gltf',
+        // basePath+'20201106/take_17_in/A_take_17_in.gltf',
+        // basePath+'20201106/take_17_loop/A_take_17_loop.gltf',
+        // basePath+'20201106/take_17_ready/A_take_17_ready.gltf',
+        // basePath+'20201106/take_22/A_take_17_loop.gltf',
+        // basePath+'20201106/take_22/A_take_22_loop.gltf',
+        // basePath+'20201106/take_24/A_take_24.gltf',
+        // basePath+'20201106/take_30/A_take_30.gltf',
+        // basePath+'20201114/B_take_06/B_take_06.gltf',
+        // basePath+'20201114/B_take_08/B_take_08.gltf',
+        // basePath+'20201114/B_take_10/B_take_10.gltf',
+        // basePath+'20201114/B_take_13/B_take_13.gltf',
+        // basePath+'20201114/B_take_14/B_take_14_npc.gltf',
+        // basePath+'20201114/B_take_17/B_take_17.gltf',
+        // basePath+'20201114/B_take_19/B_take_19.gltf',
+        // basePath+'20201114/B_take_20/B_take_20.gltf',
+        // basePath+'20201114/B_take_23/B_take_23.gltf',
+        // basePath+'20201114/B_take_27/B_take_27.gltf',
+        // basePath+'20201124/C_take_06/C_take_06.gltf',
+        // basePath+'20201124/C_take_08/C_take_08.gltf',
+        // basePath+'20201124/C_take_09/C_take_09.gltf',
+        // basePath+'20201124/C_take_11/C_take_11.gltf',
+        // basePath+'20201124/C_take_14/C_take_14.gltf',
+        // basePath+'20201124/C_take_21/C_take_21.gltf',
+        // basePath+'man/test_ch.gltf',
+        // basePath+'man2/test_ch01.gltf',
+        // basePath+'man2/test_ch02.gltf',
+        // 'https://intra.letsee.io/3D-model/gltf/lgDIOS/201005_export_glb/lgDIOS_201005_v01.glb',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201211/normal_arrest/A_take_05/A_take_05.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201211/normal_arrest/A_take_08/A_take_08.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201211/normal_arrest/A_take_13/A_take_13.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201211/normal_arrest/A_take_17A/A_take_17A.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201211/normal_arrest/A_take_17B/A_take_17B.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201211/normal_arrest/A_take_17C/A_take_17C.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201211/normal_arrest/A_take_24/A_take_24.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201211/normal_arrest/A_take_30/A_take_30.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201215/D_take_06/D_take_06.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201215/D_take_10/D_take_10.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201215/D_take_12/D_take_12.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201215/D_take_18/D_take_18.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201215/D_take_21/D_take_21.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201215/D_take_30/D_take_30.gltf',
+        // 'https://intra.letsee.io:10001/resource/3D-model/gltf/EMC/201215/test01/test01.gltf',
+        // 'https://intra.letsee.io/3D-model/gltf/EMC/normal_arrest/A_take_05/A_take_05.gltf',
+        // 'https://intra.letsee.io/3D-model/gltf/EMC/normal_arrest/A_take_08/A_take_08.gltf',
+        // 'https://intra.letsee.io/3D-model/gltf/EMC/normal_arrest/A_take_13/A_take_13.gltf',
+        // 'https://intra.letsee.io/3D-model/gltf/EMC/normal_arrest/A_take_17A/A_take_17A.gltf',
+        // 'https://intra.letsee.io/3D-model/gltf/EMC/normal_arrest/A_take_17B/A_take_17B.gltf',
+        // 'https://intra.letsee.io/3D-model/gltf/EMC/normal_arrest/A_take_17C/A_take_17C.gltf',
+        // 'https://intra.letsee.io/3D-model/gltf/EMC/normal_arrest/A_take_24/A_take_24.gltf',
+        // 'https://intra.letsee.io/3D-model/gltf/EMC/normal_arrest/A_take_30/A_take_30.gltf',
+        'https://intra.letsee.io/3D-model/gltf/ulsan/UlsanNorthMapL2.glb',
     ];
 
     let select = document.getElementById('select');
@@ -210,11 +236,11 @@
         mesh = gltf.scene;
 
         mesh.position.set(0, 0, 0);
-        mesh.rotation.set(70, 45, 0);
+        mesh.rotation.set(90, 0, 0);
         mesh.visible = true;
         mesh.tag = files[0];
         mesh.name = files[0];
-        mesh.scale.setScalar(1);
+        mesh.scale.setScalar(1*10);
 
         // Play model's animation
         if (gltf.animations.length > 0) {
@@ -233,8 +259,6 @@
                 // if (_obj) console.warn(obj.type, _obj.type, _obj);
                 switch (obj.type) {
                     case 'Mesh':
-                        obj.geometry.center();
-                        break;
                     case 'SkinnedMesh':
                         // data.skinnedMeshes.push(obj);
                         const _infos = {
