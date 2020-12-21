@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <title>Letsee WebApp: Loading GLB model</title>
+  
+  <!-- THREE.js must be supplied -->
+  <script src="https://unpkg.com/three@0.123.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.123.0/examples/js/loaders/GLTFLoader.js"></script>
+  
+  <!-- Replace the app key here with your own app key -->
+  <script src="https://developer.letsee.io/api/webar?key=your_app_key"></script>
+  
+  <!-- Client code -->
+  <script src="assets/js/glb.js"></script>
+
+</head>
+<body>
+<!-- The id of this div tag MUST be the same with id defined in media="place" style. -->
+<div id="container"></div>
+
+<!-- Loading the Letsee Engine -->
+<script>
+  letsee.ready(() => {
+    letsee.start();
+    
+    // Activate THREE.js library
+    letsee.addTHREE(THREE).then(obj => {
+      camera = obj.camera;
+      renderer = obj.renderer;
+      scene = obj.scene;
+      
+      // Initialize 3D world
+      initWorld();
+    });
+  });
+  letsee.init();
+
+</script>
+
+</body>
+</html>
