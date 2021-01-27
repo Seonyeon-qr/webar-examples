@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>iframe</title>
+    <script src="https://developer.letsee.io/api/webar?key=your_app_key"></script>
+
+    <style media="place" type="text/css">
+        #container {
+            -letsee-target: uri('letsee-marker.json');
+            width: 260px;
+            height: 160px;
+        }
+    </style>
+    <style type="text/css">
+        #container{
+            width:300px !important;
+            height:200px !important;
+            position: relative;
+            /*overflow-y: scroll;*/
+        }
+        #bg{
+            width:100% !important;
+            height:100% !important;
+            position: absolute;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999999999999;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="bg"></div>
+
+    </div>
+    <script type="application/javascript">
+
+        letsee.ready(() => {
+            letsee.start();
+            createIFrame();
+            setURLS();
+        });
+        letsee.init();
+
+        const URLS = [
+            'https://m.yna.co.kr/view/AKR20201122043651530?section=safe/index&site=topnews01',
+            'https://m.yna.co.kr/view/AKR20201121030951002?section=economy/index&site=topnews02',
+            'https://m.yna.co.kr/view/AKR20201122031752065?section=safe/index&site=topnews03'
+        ];
+
+        let idx = 0;
+
+        let container = document.getElementById('container');
+        let iframe = document.createElement('iframe');
+
+        const createIFrame = () => {
+            iframe.src = URLS[idx];
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.position ='absolute';
+            iframe.style.left ='0';
+            iframe.style.top = '0';
+            iframe.style.overflowY = 'scroll !important';
+            iframe.style.resize = 'both';
+
+
+            container.appendChild(iframe);
+        }
+
+        const setURLS = () => {
+            setInterval(() => {
+                if (idx < URLS.length -1) {
+                    ++idx;
+                } else {
+                    idx = 0;
+                }
+                iframe.src = URLS[idx];
+            }, 5000);
+        }
+
+    </script>
+</body>
+</html>
